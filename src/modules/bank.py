@@ -1,4 +1,5 @@
 from base import crawler
+from functools import wraps
 
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -8,13 +9,15 @@ import os
 import pandas as pd
 import openpyxl
 
+
 class AddressCrawler(crawler):
     def __init__(self) -> None:
         super().__init__()
         self.data = []
         self.setting()
-        self.get(page_num=139)
+        self.get()
         self.driver.quit()
+        
     
     def setting(self) -> None:
         self.driver.get("https://nonghyup.ttmap.co.kr/main.jsp")
@@ -31,8 +34,20 @@ class AddressCrawler(crawler):
         )
         tabs[1].click()
         tabs[0].click()
-    
-    def get(self, page_num=5) -> None:
+    def max_page(self) -> int:
+        result_list = self.wait.until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, '#result_list'))
+        )
+        last_button = result_list.find_elements(By.CSS_SELECTOR, 'li.paging > a.pager_btn')[-1]
+        last_button.click()
+        last_page = self.wait.until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, 'a.pager.last.pager.on'))
+        )
+        last_page_num = int(last_page.text)
+        return last_page_num
+
+    def get(self) -> None:
+        page_num = self.max_page()
         for page_number in range(1, page_num + 1):
             try:
                 self.driver.execute_script(f"javascript:goPage({page_number});")
@@ -85,4 +100,4 @@ class AddressCrawler(crawler):
         print(f"Data has been saved to {file_path}")
 
 a = AddressCrawler()
-a.save_to_excel("address_data.xlsx")
+

@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import pandas as pd
+from functools import wraps
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -22,7 +23,8 @@ class crawler(ABC):
         self.driver = webdriver.Chrome(service=self.service, options=self.options)
         self.wait = WebDriverWait(self.driver, 20)
         
-
+    def max_page(self):
+        pass
     @abstractmethod
     def setting(self) -> None:
         pass
