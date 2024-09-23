@@ -1,4 +1,4 @@
-from base import crawler
+from base import crawler_pd
 from functools import wraps
 
 from selenium.webdriver.support import expected_conditions as EC
@@ -7,10 +7,9 @@ from selenium.common.exceptions import NoSuchElementException, StaleElementRefer
 import time
 import os
 import pandas as pd
-import openpyxl
 
 
-class AddressCrawler(crawler):
+class AddressCrawler(crawler_pd):
     def __init__(self) -> None:
         super().__init__()
         self.data = []

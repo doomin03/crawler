@@ -8,7 +8,7 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 
-class crawler(ABC):
+class crawler_pd(ABC):
     def __init__(self) -> None:
         self.options = Options()
         self.options.add_argument('--window-size=1920x1080')
@@ -35,4 +35,34 @@ class crawler(ABC):
 
     @abstractmethod
     def get_pd(self) -> pd.DataFrame:
+        pass
+
+
+class crawler_json(ABC):
+    def __init__(self) -> None:
+        self.options = Options()
+        self.options.add_argument('--window-size=1920x1080')
+        # self.options.add_argument('--headless')
+        self.options.add_argument("--disable-gpu")
+        self.options.add_argument("--disable-images")
+        self.options.add_argument('--incognito')
+        self.options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
+
+
+        self.service = Service()
+        self.driver = webdriver.Chrome(service=self.service, options=self.options)
+        self.wait = WebDriverWait(self.driver, 20)
+        
+    def max_page(self):
+        pass
+    @abstractmethod
+    def setting(self) -> None:
+        pass
+
+    @abstractmethod
+    def get(self) -> dict:
+        pass
+
+    @abstractmethod
+    def get_json(self) -> pd.DataFrame:
         pass
