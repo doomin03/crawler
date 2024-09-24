@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import pandas as pd
+import json
 from functools import wraps
 
 from selenium import webdriver
@@ -12,7 +13,7 @@ class crawler_pd(ABC):
     def __init__(self) -> None:
         self.options = Options()
         self.options.add_argument('--window-size=1920x1080')
-        # self.options.add_argument('--headless')
+        self.options.add_argument('--headless')
         self.options.add_argument("--disable-gpu")
         self.options.add_argument("--disable-images")
         self.options.add_argument('--incognito')
@@ -33,7 +34,7 @@ class crawler_pd(ABC):
     def get(self) -> dict:
         pass
 
-    @abstractmethod
+    #@abstractmethod
     def get_pd(self) -> pd.DataFrame:
         pass
 
@@ -63,6 +64,6 @@ class crawler_json(ABC):
     def get(self) -> dict:
         pass
 
-    @abstractmethod
-    def get_json(self) -> pd.DataFrame:
+    #@abstractmethod
+    def get_json(self) -> json:
         pass
