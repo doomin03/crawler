@@ -43,7 +43,7 @@ class crawler_json(ABC):
     def __init__(self) -> None:
         self.options = Options()
         self.options.add_argument('--window-size=1920x1080')
-        # self.options.add_argument('--headless')
+        self.options.add_argument('--headless')
         self.options.add_argument("--disable-gpu")
         self.options.add_argument("--disable-images")
         self.options.add_argument('--incognito')

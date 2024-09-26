@@ -1,4 +1,4 @@
-from base import crawler_json
+from modules.base import crawler_json
 
 import json
 
@@ -60,12 +60,12 @@ class main_view(crawler_json):
 class movie_list(crawler_json):
     def __init__(self) -> None:
         super().__init__()
-        self.data = {
+        self.data_list = {
             "list" : []
         }
         self.setting()
         self.get()
-        # self.driver.quit()
+        self.driver.quit()
 
     def setting(self) -> None:
         self.driver.get("http://www.cgv.co.kr/movies/?lt=1&ft=0")
@@ -75,16 +75,17 @@ class movie_list(crawler_json):
         button.click() 
         
     def get(self) -> dict:
-        movie_info = {
-            "rank" : None,
-            "img_url" : None,
-            "title" : None,
-            "sales_rate" : None
-        }
-
         movie_chart = self.wait.until(
             EC.visibility_of_element_located((By.CSS_SELECTOR, ".sect-movie-chart"))
         )
         movies = movie_chart.find_elements(By.CSS_SELECTOR, "li")
-        #for movie in movies:
-            
+        for movie in movies:
+            movie_info = {
+                "rank" : movie.find_element(By.CSS_SELECTOR, '.box-image > .rank').text,
+                "img_url" : movie.find_element(By.CSS_SELECTOR, '.box-image img').get_attribute('src'),
+                "title" : movie.find_element(By.CSS_SELECTOR, '.box-contents a strong.title').text,
+                "sales_rate" : movie.find_element(By.CSS_SELECTOR, '.box-contents .score strong').text
+            }
+            self.data_list['list'].append(movie_info)
+
+
